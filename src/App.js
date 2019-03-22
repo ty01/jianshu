@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import TodoList from './pages/TodoList/todolist.js';
 
 class App extends Component {
   render() {
     return (
       <div >
-        hello word
+       <TodoList></TodoList>
       </div>
     );
   }
