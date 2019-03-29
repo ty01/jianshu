@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes'
 import {fromJS} from 'immutable';
 import axios from 'axios';
+import { message } from 'antd';
 const searchFocus = () =>({
     type : actionTypes.search_focused
 })
@@ -15,17 +16,33 @@ const getHotList = () =>{
             if(data.success){
                 const action ={
                     type:actionTypes.get_hostList,
-                    value: fromJS(data.data)
+                    value: fromJS(data.data),
+                    totalPage:Math.ceil(data.data.length/10)
                 }
                 dispath(action)
             }else{
+                message.error('网络错误，请稍后重试');
             }
         }).catch((e)=>{
+            message.error('网络错误，请稍后重试');
         })
     }
 }
 
+const hotListNext=(page)=>({
+    type:actionTypes.hotListNext,
+    value:page
+})
+
+const hotListOver=()=>({
+    type:actionTypes.hotListOver,
+})
+
+const hotListOut=()=>({
+    type:actionTypes.hotListOut,
+})
+
 
 export {
-    searchFocus, searchBlur , getHotList
+    searchFocus, searchBlur , getHotList, hotListNext ,hotListOver , hotListOut
 }

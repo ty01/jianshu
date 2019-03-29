@@ -56,7 +56,7 @@ export const NavSearch = styled.input.attrs({
     padding:0 30px 0 25px; 
     box-sizing:border-box;
     font-size:14px;
-    margin-left:20px;
+    
     color:#666;
     &::placeholder{
         color:#999;
@@ -104,7 +104,8 @@ export const Button = styled.div`
 export const Searchbox = styled.div`
     float:left;
     position:relative;
-    .iconfont{
+    margin-left:20px;
+    >.iconfont{
         position:absolute;
         right:5px;
         bottom:5px;
@@ -113,6 +114,7 @@ export const Searchbox = styled.div`
         line-height:30px;
         text-align:center;
         border-radius:15px;
+        
         &.focused{
             color:#fff;
             background:#777;
@@ -136,8 +138,17 @@ export const SearchHotTitle = styled.div`
     color:#969696;
 `;
 export const SearchHotChange = styled.span`
+    
     font-size:13px;
     float:right;
+    .spin{
+        display:block;
+        float:left;
+        font-size:12px;
+        padding-right:2px;
+        transition:all .4s ease-in;
+        transform-origin: center center;
+    }
 `;
 export const SearchHotItem = styled.li`
     display:inline-block;

@@ -24,7 +24,13 @@ class Header extends Component{
             focused,
             handelInputFocus,
             handelInputBlur,
-            hotList
+            hotListNext,
+            hotList,
+            page,
+            totalPage,
+            hotListHover,
+            hotListOver,
+            hotListOut,
         } =this.props
         return (
             <HeaderWrapper>
@@ -36,35 +42,44 @@ class Header extends Component{
                     <NavItem className='right'><i className='iconfont'>&#xe636;</i></NavItem>
                     <Searchbox>
                         <CSSTransition
-                            in={focused}
+                            in={focused || hotListHover}
                             timeout={500}
                             classNames="slide"
                         >
                             <NavSearch 
-                                className={focused ? "focused" : "" }
-                                onFocus={handelInputFocus}
+                                className={(focused || hotListHover)? "focused" : "" }
+                                onFocus={()=>{
+                                    handelInputFocus(hotList)
+                                }}
                                 onBlur={handelInputBlur}
                             ></NavSearch>
                         </CSSTransition>
-                        <i className={focused ? "focused iconfont" : "iconfont"}>&#xe6e4;</i>
+                        <i className={(focused || hotListHover) ? "focused iconfont" : "iconfont"}>&#xe6e4;</i>
                         
-                        {
-                            focused ? <SearchHot>
-                            <SearchHotTitle>
-                                热门搜索
-                                <SearchHotChange>
-                                    换一批
-                                </SearchHotChange>
-                            </SearchHotTitle>
-                            <ul>
-                                {
-                                    hotList.map((item)=>{
-                                        return <SearchHotItem key={item}><a>{item}</a></SearchHotItem>
-                                    })
-                                }
-                                
-                            </ul>    
-                        </SearchHot> : null
+                        {   (focused || hotListHover) ?
+                            <SearchHot onMouseEnter={hotListOver} onMouseLeave={hotListOut}>
+                                <SearchHotTitle>
+                                    热门搜索
+                                    <SearchHotChange  onClick={
+                                            ()=>{
+                                                hotListNext(page,totalPage,this.spinIcon)
+                                            }   
+                                        }>
+                                        <i ref={(icon)=>{this.spinIcon=icon}} className={"spin iconfont"}>&#xe671;</i>换一批
+                                    </SearchHotChange>
+                                </SearchHotTitle>
+                                <ul>
+                                    {
+                                        hotList.map((item,index)=>{
+                                            if( (page-1)*10 <= index &&  index< page*10){
+                                                return <SearchHotItem key={item}><a href="/detail">{item}</a></SearchHotItem>
+                                            }
+                                            return null
+                                        })
+                                    }
+                                    
+                                </ul>    
+                            </SearchHot> :null
                         }
                         
                     </Searchbox>
@@ -85,19 +100,41 @@ class Header extends Component{
 const mapStateToProps = (state)=>{
     return {
         focused:state.getIn(['header','focused']),
-        hotList:state.getIn(['header','hotList']),
+        hotList:state.getIn(['header','hotList']).toJS(),
+        page:state.getIn(['header','page']),
+        totalPage:state.getIn(['header','totalPage']),
+        hotListHover:state.getIn(['header','hotListHover']),
         //focused:state.get('header').get('focused')
     }
 }
 
 const mapDispathToProps = (dispath) =>{
     return {
-        handelInputFocus (){
+        handelInputFocus (list){
             dispath(actionCreators.searchFocus())
-            dispath(actionCreators.getHotList())
+            if(!list.length){
+                dispath(actionCreators.getHotList())
+            }
+            
         },
         handelInputBlur (){
             dispath(actionCreators.searchBlur())
+        },
+        hotListNext(page,totalPage,spin){
+            const oldOrigin = (spin.style.transform.replace(/[^0-9]/ig,"") || 0 ) * 1;
+            spin.style.transform='rotate('+ (oldOrigin+360) +'deg)';
+            console.log(spin.style.transform)
+            page++
+            if(page > totalPage){
+                page =1
+            }
+            dispath(actionCreators.hotListNext(page))
+        },
+        hotListOver(){
+            dispath(actionCreators.hotListOver())
+        },
+        hotListOut(){
+            dispath(actionCreators.hotListOut())
         }
     }
 }   
