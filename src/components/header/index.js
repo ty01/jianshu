@@ -123,7 +123,6 @@ const mapDispathToProps = (dispath) =>{
         hotListNext(page,totalPage,spin){
             const oldOrigin = (spin.style.transform.replace(/[^0-9]/ig,"") || 0 ) * 1;
             spin.style.transform='rotate('+ (oldOrigin+360) +'deg)';
-            console.log(spin.style.transform)
             page++
             if(page > totalPage){
                 page =1

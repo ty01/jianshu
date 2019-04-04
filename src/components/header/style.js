@@ -1,5 +1,5 @@
 import  styled  from 'styled-components'
-import logo from '../../statics/logo.png'
+import logo from '../../statics/images/logo.png'
 
 export const HeaderWrapper = styled.div`
     position:relative;
@@ -138,7 +138,6 @@ export const SearchHotTitle = styled.div`
     color:#969696;
 `;
 export const SearchHotChange = styled.span`
-    
     font-size:13px;
     float:right;
     .spin{

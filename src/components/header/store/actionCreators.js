@@ -2,6 +2,8 @@ import * as actionTypes from './actionTypes'
 import {fromJS} from 'immutable';
 import axios from 'axios';
 import { message } from 'antd';
+
+
 const searchFocus = () =>({
     type : actionTypes.search_focused
 })
@@ -9,6 +11,7 @@ const searchFocus = () =>({
 const searchBlur = () =>({
     type : actionTypes.search_blured
 })
+
 const getHotList = () =>{
     return (dispath) => {
         axios.get('/api/hotList.json').then((res)=>{
@@ -44,5 +47,10 @@ const hotListOut=()=>({
 
 
 export {
-    searchFocus, searchBlur , getHotList, hotListNext ,hotListOver , hotListOut
+    searchFocus, 
+    searchBlur , 
+    getHotList, 
+    hotListNext,
+    hotListOver, 
+    hotListOut
 }
