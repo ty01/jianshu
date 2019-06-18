@@ -130,6 +130,8 @@ export const SearchHot = styled.div`
     padding:20px 20px 10px;
     box-shadow: 0 0 8px rgba(0,0,0,.2);
     box-sizing:border-box;
+    z-index:99999999999999;
+    background:#fff;
 `;
 export const SearchHotTitle = styled.div`
     margin-bottom:15px;
